@@ -480,6 +480,18 @@
       color: #fcd34d;
     }
 
+    .teacher-badge {
+      font-size: 0.76rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(129, 140, 248, 0.16);
+      color: #c7d2fe;
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     .task-title {
       font-size: 1rem;
       font-weight: 600;
@@ -761,7 +773,7 @@
 
     <!-- Search & Filter -->
     <section class="filter-bar">
-      <input type="text" id="searchInput" class="input" placeholder="🔍 ค้นหาชื่องาน หรือรายละเอียด..." oninput="renderTasks()" />
+      <input type="text" id="searchInput" class="input" placeholder="🔍 ค้นหาชื่องาน, ชื่อครู หรือรายละเอียด..." oninput="renderTasks()" />
       <select id="subjectFilter" onchange="playSound('click'); renderTasks()">
         <option value="all">ทุกวิชา</option>
       </select>
@@ -812,6 +824,11 @@
         <div class="form-group">
           <label>ชื่องาน / การบ้าน *</label>
           <input type="text" id="taskTitle" class="input" placeholder="เช่น แบบฝึกหัดหน้า 24-26" required />
+        </div>
+        <div class="form-group">
+          <label>ส่งใคร (ชื่อครู)</label>
+          <input type="text" id="taskTeacher" class="input" list="teacherSuggestions" placeholder="เช่น ครูสมศรี, อาจารย์วิทย์ (ไม่ระบุก็ได้)" autocomplete="off" />
+          <datalist id="teacherSuggestions"></datalist>
         </div>
         <div class="form-group">
           <label>วันกำหนดส่ง</label>
@@ -966,7 +983,7 @@
       }
     });
 
-    // ระบบเสียงเอฟเฟกต์ด้วย Web Audio API (ไม่ต้องโหลดไฟล์เสียงภายนอก)
+    // ระบบเสียงเอฟเฟกต์โทนใหม่ที่นุ่มหูและมีมิติขึ้น (Web Audio API)
     function getAudioContext() {
       if (!audioCtx) {
         const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -984,35 +1001,60 @@
       if (!ctx) return;
 
       const now = ctx.currentTime;
-      const playTone = (freq, startOffset, duration, gainVal = 0.08, wave = "sine") => {
+
+      const playSoftNote = ({
+        freq,
+        endFreq = null,
+        offset = 0,
+        duration = 0.14,
+        gain = 0.06,
+        wave = "sine",
+        filterFreq = 1800
+      }) => {
         const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+        const amp = ctx.createGain();
+
         osc.type = wave;
-        osc.frequency.setValueAtTime(freq, now + startOffset);
-        gain.gain.setValueAtTime(0.0001, now + startOffset);
-        gain.gain.exponentialRampToValueAtTime(gainVal, now + startOffset + 0.015);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + startOffset + duration);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now + startOffset);
-        osc.stop(now + startOffset + duration + 0.02);
+        osc.frequency.setValueAtTime(freq, now + offset);
+        if (endFreq) {
+          osc.frequency.exponentialRampToValueAtTime(endFreq, now + offset + duration);
+        }
+
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(filterFreq, now + offset);
+
+        amp.gain.setValueAtTime(0.0001, now + offset);
+        amp.gain.linearRampToValueAtTime(gain, now + offset + 0.012);
+        amp.gain.exponentialRampToValueAtTime(0.0001, now + offset + duration);
+
+        osc.connect(filter);
+        filter.connect(amp);
+        amp.connect(ctx.destination);
+
+        osc.start(now + offset);
+        osc.stop(now + offset + duration + 0.03);
       };
 
       if (type === "click") {
-        playTone(620, 0, 0.06, 0.05, "triangle");
+        // เสียง pop อุ่นๆ สั้นๆ
+        playSoftNote({ freq: 340, endFreq: 520, offset: 0, duration: 0.055, gain: 0.045, wave: "sine", filterFreq: 1400 });
       } else if (type === "open") {
-        playTone(440, 0, 0.08, 0.05, "sine");
-        playTone(660, 0.05, 0.1, 0.06, "sine");
+        // เสียงเปิดหน้าต่าง 2 โน้ตนุ่มนวล
+        playSoftNote({ freq: 392.0, offset: 0, duration: 0.09, gain: 0.045, wave: "sine", filterFreq: 1600 });
+        playSoftNote({ freq: 523.25, offset: 0.045, duration: 0.13, gain: 0.05, wave: "sine", filterFreq: 1800 });
       } else if (type === "save") {
-        playTone(523.25, 0, 0.1, 0.08, "sine");
-        playTone(783.99, 0.08, 0.16, 0.08, "sine");
+        // เสียง marimba / soft bell สองจังหวะ
+        playSoftNote({ freq: 587.33, offset: 0, duration: 0.12, gain: 0.065, wave: "sine", filterFreq: 2100 });
+        playSoftNote({ freq: 880.0, offset: 0.075, duration: 0.22, gain: 0.065, wave: "sine", filterFreq: 2400 });
       } else if (type === "done") {
-        playTone(523.25, 0, 0.09, 0.08, "triangle");
-        playTone(659.25, 0.07, 0.09, 0.08, "triangle");
-        playTone(1046.5, 0.14, 0.22, 0.09, "sine");
+        // คอร์ด 3 โน้ตละมุนๆ ไล่ระดับขึ้น (C5 - E5 - G5)
+        playSoftNote({ freq: 523.25, offset: 0, duration: 0.14, gain: 0.06, wave: "sine", filterFreq: 2000 });
+        playSoftNote({ freq: 659.25, offset: 0.065, duration: 0.16, gain: 0.065, wave: "sine", filterFreq: 2200 });
+        playSoftNote({ freq: 783.99, offset: 0.13, duration: 0.28, gain: 0.07, wave: "sine", filterFreq: 2500 });
       } else if (type === "delete") {
-        playTone(360, 0, 0.09, 0.07, "sawtooth");
-        playTone(240, 0.07, 0.14, 0.06, "sawtooth");
+        // เสียงต่ำลงนุ่มๆ ไม่แข็งกระด้าง
+        playSoftNote({ freq: 330, endFreq: 220, offset: 0, duration: 0.16, gain: 0.055, wave: "triangle", filterFreq: 950 });
       }
     };
 
@@ -1093,6 +1135,20 @@
       renderSubjectPreview();
     }
 
+    function updateTeacherSuggestions() {
+      const datalist = document.getElementById("teacherSuggestions");
+      if (!datalist) return;
+      const uniqueTeachers = [...new Set(
+        tasks
+          .map((t) => (t.teacher || "").trim())
+          .filter(Boolean)
+      )].sort((a, b) => a.localeCompare(b, "th"));
+
+      datalist.innerHTML = uniqueTeachers
+        .map((name) => `<option value="${escapeHtml(name)}"></option>`)
+        .join("");
+    }
+
     function subscribeToRoomData(roomId) {
       if (unsubscribeTasks) unsubscribeTasks();
       if (unsubscribeRoom) unsubscribeRoom();
@@ -1116,6 +1172,7 @@
         (snapshot) => {
           tasks = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
           setSyncStatus(true, "ซิงก์ Real-time แล้ว");
+          updateTeacherSuggestions();
           updateStats();
           renderTasks();
         },
@@ -1368,6 +1425,7 @@
 
     window.openTaskModal = (taskId = null) => {
       renderSubjectOptions();
+      updateTeacherSuggestions();
       const form = document.getElementById("taskForm");
       form.reset();
       document.getElementById("editTaskId").value = "";
@@ -1381,6 +1439,7 @@
         document.getElementById("editTaskId").value = t.id;
         document.getElementById("taskSubject").value = t.subject;
         document.getElementById("taskTitle").value = t.title;
+        document.getElementById("taskTeacher").value = t.teacher || "";
         document.getElementById("taskDesc").value = t.description || "";
 
         if (!t.dueDate) {
@@ -1417,6 +1476,7 @@
         roomId: currentRoomId,
         subject: document.getElementById("taskSubject").value,
         title: document.getElementById("taskTitle").value.trim(),
+        teacher: document.getElementById("taskTeacher").value.trim(),
         dueDate: dueDateVal,
         description: document.getElementById("taskDesc").value.trim(),
         updatedAt: serverTimestamp()
@@ -1517,7 +1577,7 @@
         if (statusFilter === "urgent" && !isUrgentOrOverdue(t)) return false;
         if (subjFilter !== "all" && t.subject !== subjFilter) return false;
         if (search) {
-          const hay = `${t.title || ""} ${t.description || ""} ${t.subject || ""}`.toLowerCase();
+          const hay = `${t.title || ""} ${t.teacher || ""} ${t.description || ""} ${t.subject || ""}`.toLowerCase();
           if (!hay.includes(search)) return false;
         }
         return true;
@@ -1550,6 +1610,9 @@
           const subjObj = subjects.find((s) => s.name === t.subject) || { color: "#93c5fd" };
           const due = getDueMeta(t.dueDate, t.completed);
           const delay = Math.min(index * 45, 300);
+          const teacherBadge = t.teacher
+            ? `<span class="teacher-badge"><i class="fa-solid fa-chalkboard-user"></i> ส่ง: ${escapeHtml(t.teacher)}</span>`
+            : "";
 
           return `
             <article class="task-card ${t.completed ? "done" : ""}" style="border-left-color:${subjObj.color}; animation-delay:${delay}ms;">
@@ -1557,6 +1620,7 @@
                 <div class="task-top">
                   <span class="subject-tag" style="background:${subjObj.color};">${escapeHtml(t.subject)}</span>
                   <span class="due-badge ${due.cls}">${due.text}</span>
+                  ${teacherBadge}
                 </div>
                 <div class="task-title">${escapeHtml(t.title)}</div>
                 ${t.description ? `<div class="task-desc">${escapeHtml(t.description)}</div>` : ""}
