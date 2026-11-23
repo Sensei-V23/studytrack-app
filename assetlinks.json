@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.onrender.studytrack_app.twa",
+      "sha256_cert_fingerprints": [
+        "98:92:42:56:EC:F2:2E:F3:F3:4C:67:DD:C8:7A:DA:21:43:13:29:DB:83:D2:DA:84:20:EC:75:EA:8E:07:31:64"
+      ]
+    }
+  }
+]
