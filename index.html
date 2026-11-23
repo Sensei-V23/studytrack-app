@@ -662,25 +662,31 @@
   <div class="modal-backdrop" id="subjectModal">
     <div class="modal">
       <div class="modal-header">
-        <h2>จัดการรายวิชาในห้องนี้</h2>
+        <h2 id="subjectModalTitle">จัดการรายวิชาในห้องนี้</h2>
         <button class="btn btn-secondary btn-sm" onclick="closeModal('subjectModal')"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <form onsubmit="addSubject(event)" style="margin-bottom:16px;">
+      <form onsubmit="saveSubject(event)" style="margin-bottom:16px;">
+        <input type="hidden" id="editSubjectIndex" value="-1" />
         <div class="form-group">
-          <label>ชื่อรายวิชาใหม่</label>
+          <label id="subjectFormLabel">ชื่อรายวิชาใหม่</label>
           <input type="text" id="newSubjectName" class="input" placeholder="เช่น ฟิสิกส์, สังคมศึกษา" required />
         </div>
         <div class="form-group">
           <label>เลือกสีพาสเทลประจำวิชา</label>
           <div class="color-row" id="colorSwatchRow"></div>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;">
-          <i class="fa-solid fa-plus"></i> เพิ่มรายวิชา
-        </button>
+        <div style="display:flex; gap:8px;">
+          <button type="submit" class="btn btn-primary" style="flex:1;" id="subjectSubmitBtn">
+            <i class="fa-solid fa-plus"></i> เพิ่มรายวิชา
+          </button>
+          <button type="button" class="btn btn-secondary" id="cancelEditSubjectBtn" style="display:none;" onclick="resetSubjectForm()">
+            ยกเลิก
+          </button>
+        </div>
       </form>
 
-      <div id="subjectListPreview" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+      <div id="subjectListPreview" style="display:flex; flex-direction:column; gap:8px;"></div>
     </div>
   </div>
 
@@ -731,7 +737,6 @@
     let unsubscribeTasks = null;
     let unsubscribeRoom = null;
 
-    // Register Service Worker for PWA
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js").catch((err) => console.log("SW:", err));
@@ -833,7 +838,6 @@
       setSyncStatus(false, "กรุณาเปิด Anonymous Auth ใน Firebase");
     });
 
-    // Expose functions to window for HTML event handlers
     window.openModal = (id) => document.getElementById(id).classList.add("open");
     window.closeModal = (id) => document.getElementById(id).classList.remove("open");
 
@@ -893,9 +897,33 @@
     };
 
     window.openSubjectModal = () => {
-      initColorSwatches();
+      resetSubjectForm();
       renderSubjectPreview();
       openModal("subjectModal");
+    };
+
+    window.resetSubjectForm = () => {
+      document.getElementById("editSubjectIndex").value = "-1";
+      document.getElementById("subjectModalTitle").textContent = "จัดการรายวิชาในห้องนี้";
+      document.getElementById("subjectFormLabel").textContent = "ชื่อรายวิชาใหม่";
+      document.getElementById("newSubjectName").value = "";
+      document.getElementById("subjectSubmitBtn").innerHTML = '<i class="fa-solid fa-plus"></i> เพิ่มรายวิชา';
+      document.getElementById("cancelEditSubjectBtn").style.display = "none";
+      selectedColor = PASTEL_COLORS[0];
+      initColorSwatches();
+    };
+
+    window.startEditSubject = (idx) => {
+      const subj = subjects[idx];
+      if (!subj) return;
+      document.getElementById("editSubjectIndex").value = String(idx);
+      document.getElementById("subjectModalTitle").textContent = "แก้ไขรายวิชา";
+      document.getElementById("subjectFormLabel").textContent = "แก้ไขชื่อรายวิชา";
+      document.getElementById("newSubjectName").value = subj.name;
+      document.getElementById("subjectSubmitBtn").innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไข';
+      document.getElementById("cancelEditSubjectBtn").style.display = "inline-flex";
+      selectedColor = subj.color || PASTEL_COLORS[0];
+      initColorSwatches();
     };
 
     function initColorSwatches() {
@@ -915,25 +943,76 @@
 
     function renderSubjectPreview() {
       const wrap = document.getElementById("subjectListPreview");
+      if (!subjects.length) {
+        wrap.innerHTML = `<div style="font-size:0.84rem; color:var(--text-muted);">ยังไม่มีรายวิชาในห้องนี้</div>`;
+        return;
+      }
+
       wrap.innerHTML = subjects
         .map(
-          (s) => `<span class="subject-tag" style="background:${s.color};">${escapeHtml(s.name)}</span>`
+          (s, idx) => `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; background:var(--bg-input); border:1px solid var(--border); padding:8px 12px; border-radius:10px;">
+            <span class="subject-tag" style="background:${s.color};">${escapeHtml(s.name)}</span>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="startEditSubject(${idx})">
+                <i class="fa-solid fa-pen"></i> แก้ไข
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deleteSubject(${idx})">
+                <i class="fa-solid fa-trash"></i> ลบ
+              </button>
+            </div>
+          </div>`
         )
         .join("");
     }
 
-    window.addSubject = async (e) => {
+    window.saveSubject = async (e) => {
       e.preventDefault();
       const name = document.getElementById("newSubjectName").value.trim();
+      const editIdx = Number(document.getElementById("editSubjectIndex").value);
       if (!name || !currentRoomId) return;
-      if (subjects.some((s) => s.name === name)) {
+
+      const duplicate = subjects.some((s, i) => s.name === name && i !== editIdx);
+      if (duplicate) {
         return alert("มีรายวิชานี้อยู่แล้วครับ");
       }
-      const updated = [...subjects, { name, color: selectedColor }];
+
+      let updated = [...subjects];
+      if (editIdx >= 0 && updated[editIdx]) {
+        const oldName = updated[editIdx].name;
+        updated[editIdx] = { name, color: selectedColor };
+
+        if (oldName !== name) {
+          const matchingTasks = tasks.filter((t) => t.subject === oldName);
+          await Promise.all(
+            matchingTasks.map((t) => updateDoc(doc(db, "tasks", t.id), { subject: name }))
+          );
+        }
+      } else {
+        updated.push({ name, color: selectedColor });
+      }
+
       await updateDoc(doc(db, "rooms", currentRoomId), { subjects: updated });
       subjects = updated;
-      document.getElementById("newSubjectName").value = "";
+      resetSubjectForm();
       updateRoomUI();
+      renderTasks();
+    };
+
+    window.deleteSubject = async (idx) => {
+      const target = subjects[idx];
+      if (!target || !currentRoomId) return;
+      if (!confirm(`ต้องการลบรายวิชา "${target.name}" ใช่ไหม?`)) return;
+
+      const updated = subjects.filter((_, i) => i !== idx);
+      await updateDoc(doc(db, "rooms", currentRoomId), { subjects: updated });
+      subjects = updated;
+
+      if (Number(document.getElementById("editSubjectIndex").value) === idx) {
+        resetSubjectForm();
+      }
+      updateRoomUI();
+      renderTasks();
     };
 
     function renderSubjectOptions() {
