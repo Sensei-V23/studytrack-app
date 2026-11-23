@@ -279,7 +279,7 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s ease, box-shadow 0.18s ease;
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
     .btn:active {
@@ -307,6 +307,12 @@
     .btn-secondary:hover {
       background: var(--bg-card-hover);
       transform: translateY(-1px);
+    }
+
+    .btn-manage-active {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.45);
     }
 
     .btn-danger {
@@ -368,7 +374,20 @@
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr;
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+    }
+
+    .list-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .list-toolbar-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     .input, select, textarea {
@@ -415,7 +434,7 @@
     .task-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .task-card {
@@ -423,10 +442,10 @@
       border: 1px solid var(--border);
       border-left: 5px solid var(--accent);
       border-radius: 14px;
-      padding: 16px;
+      padding: 14px 16px;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       gap: 14px;
       transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
       animation: cardPopIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -446,25 +465,40 @@
       text-decoration: line-through;
     }
 
+    .task-body {
+      flex: 1;
+      min-width: 0;
+    }
+
     .task-top {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 6px;
     }
 
     .subject-tag {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
-      padding: 3px 10px;
+      padding: 2px 10px;
       border-radius: 999px;
       color: #0f172a;
     }
 
+    .type-badge {
+      font-size: 0.74rem;
+      font-weight: 500;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
     .due-badge {
-      font-size: 0.76rem;
-      padding: 3px 9px;
+      font-size: 0.74rem;
+      padding: 2px 9px;
       border-radius: 999px;
       background: rgba(148, 163, 184, 0.15);
       color: var(--text-main);
@@ -481,8 +515,8 @@
     }
 
     .teacher-badge {
-      font-size: 0.76rem;
-      padding: 3px 9px;
+      font-size: 0.74rem;
+      padding: 2px 9px;
       border-radius: 999px;
       background: rgba(129, 140, 248, 0.16);
       color: #c7d2fe;
@@ -495,11 +529,11 @@
     .task-title {
       font-size: 1rem;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .task-desc {
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
       white-space: pre-line;
     }
@@ -509,6 +543,12 @@
       flex-direction: column;
       gap: 6px;
       flex-shrink: 0;
+    }
+
+    .manage-only-actions {
+      display: flex;
+      gap: 6px;
+      animation: fadeUp 0.2s ease both;
     }
 
     /* Empty State */
@@ -692,12 +732,19 @@
       }
       .task-card {
         flex-direction: column;
+        align-items: stretch;
       }
       .task-actions {
         flex-direction: row;
         width: 100%;
       }
-      .task-actions .btn {
+      .task-actions > .btn {
+        flex: 1;
+      }
+      .manage-only-actions {
+        flex: 1.2;
+      }
+      .manage-only-actions .btn {
         flex: 1;
       }
     }
@@ -745,6 +792,9 @@
         <button class="btn btn-secondary btn-sm" onclick="openSubjectModal()">
           <i class="fa-solid fa-palette"></i> รายวิชา
         </button>
+        <button class="btn btn-secondary btn-sm" onclick="openTaskTypeModal()">
+          <i class="fa-solid fa-tags"></i> ประเภทงาน
+        </button>
         <button class="btn btn-primary btn-sm" onclick="openTaskModal()">
           <i class="fa-solid fa-plus"></i> เพิ่มงาน
         </button>
@@ -773,7 +823,7 @@
 
     <!-- Search & Filter -->
     <section class="filter-bar">
-      <input type="text" id="searchInput" class="input" placeholder="🔍 ค้นหาชื่องาน, ชื่อครู หรือรายละเอียด..." oninput="renderTasks()" />
+      <input type="text" id="searchInput" class="input" placeholder="🔍 ค้นหาชื่องาน, ประเภทงาน, ชื่อครู..." oninput="renderTasks()" />
       <select id="subjectFilter" onchange="playSound('click'); renderTasks()">
         <option value="all">ทุกวิชา</option>
       </select>
@@ -782,6 +832,14 @@
         <option value="dueDesc">เรียงตามวันส่ง (ช้าสุดก่อน)</option>
         <option value="newest">เพิ่มล่าสุดก่อน</option>
       </select>
+    </section>
+
+    <!-- Toolbar เปิด/ปิดโหมดแก้ไข & ลบ -->
+    <section class="list-toolbar">
+      <span class="list-toolbar-hint" id="manageModeHint">มุมมองอ่านง่าย (ซ่อนปุ่มแก้ไข/ลบ)</span>
+      <button type="button" class="btn btn-secondary btn-sm" id="manageModeBtn" onclick="toggleManageMode()">
+        <i class="fa-solid fa-sliders"></i> เปิดโหมดแก้ไข/ลบ
+      </button>
     </section>
 
     <!-- Task List -->
@@ -822,8 +880,17 @@
           <select id="taskSubject" required></select>
         </div>
         <div class="form-group">
-          <label>ชื่องาน / การบ้าน *</label>
-          <input type="text" id="taskTitle" class="input" placeholder="เช่น แบบฝึกหัดหน้า 24-26" required />
+          <label>ประเภทงาน *</label>
+          <div style="display:flex; gap:8px;">
+            <select id="taskType" required style="flex:1;"></select>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="openTaskTypeModal()" title="เพิ่ม / แก้ไข / ลบประเภทงาน">
+              <i class="fa-solid fa-gear"></i> จัดการ
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>ชื่องาน / รายละเอียดหัวข้อ *</label>
+          <input type="text" id="taskTitle" class="input" placeholder="เช่น หน้า 24-26 หรือ วาดรูปวันคริสต์มาส" required />
         </div>
         <div class="form-group">
           <label>ส่งใคร (ชื่อครู)</label>
@@ -920,6 +987,34 @@
     </div>
   </div>
 
+  <!-- Task Type Modal (เพิ่ม / แก้ไข / ลบ ประเภทงาน) -->
+  <div class="modal-backdrop" id="taskTypeModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="taskTypeModalTitle">จัดการประเภทงาน</h2>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('taskTypeModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form onsubmit="saveTaskType(event)" style="margin-bottom:16px;">
+        <input type="hidden" id="editTaskTypeIndex" value="-1" />
+        <div class="form-group">
+          <label id="taskTypeFormLabel">ชื่อประเภทงานใหม่</label>
+          <input type="text" id="newTaskTypeName" class="input" placeholder="เช่น แบบฝึกหัด, ใบงาน, โครงงาน, ท่องจำ" required />
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button type="submit" class="btn btn-primary" style="flex:1;" id="taskTypeSubmitBtn">
+            <i class="fa-solid fa-plus"></i> เพิ่มประเภทงาน
+          </button>
+          <button type="button" class="btn btn-secondary" id="cancelEditTaskTypeBtn" style="display:none;" onclick="resetTaskTypeForm()">
+            ยกเลิก
+          </button>
+        </div>
+      </form>
+
+      <div id="taskTypeListPreview" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+  </div>
+
   <!-- Firebase SDK (Modular v10) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -957,22 +1052,34 @@
       { name: "วิทยาการคำนวณ", color: "#67e8f9" }
     ];
 
+    const DEFAULT_TASK_TYPES = [
+      "แบบฝึกหัด",
+      "ใบงาน",
+      "ส่งสมุด",
+      "โครงงาน / รายงาน",
+      "อ่านหนังสือ / ท่องจำ",
+      "อื่นๆ"
+    ];
+
     let currentUser = null;
     let currentRoomId = localStorage.getItem("studytrack_room_id") || "";
     let currentRoomName = localStorage.getItem("studytrack_room_name") || "";
     let subjects = [...DEFAULT_SUBJECTS];
+    let taskTypes = [...DEFAULT_TASK_TYPES];
     let tasks = [];
     let statusFilter = "all";
     let selectedColor = PASTEL_COLORS[0];
     let unsubscribeTasks = null;
     let unsubscribeRoom = null;
     let soundEnabled = localStorage.getItem("studytrack_sound") !== "off";
+    let manageMode = false;
     let audioCtx = null;
     let toastTimer = null;
 
     // ซ่อนหน้า Splash Screen หลังเปิดแอป 1.2 วินาที
     window.addEventListener("load", () => {
       updateSoundButtonUI();
+      updateManageModeUI();
       setTimeout(() => {
         const splash = document.getElementById("splashScreen");
         if (splash) splash.classList.add("hide");
@@ -1037,23 +1144,18 @@
       };
 
       if (type === "click") {
-        // เสียง pop อุ่นๆ สั้นๆ
         playSoftNote({ freq: 340, endFreq: 520, offset: 0, duration: 0.055, gain: 0.045, wave: "sine", filterFreq: 1400 });
       } else if (type === "open") {
-        // เสียงเปิดหน้าต่าง 2 โน้ตนุ่มนวล
         playSoftNote({ freq: 392.0, offset: 0, duration: 0.09, gain: 0.045, wave: "sine", filterFreq: 1600 });
         playSoftNote({ freq: 523.25, offset: 0.045, duration: 0.13, gain: 0.05, wave: "sine", filterFreq: 1800 });
       } else if (type === "save") {
-        // เสียง marimba / soft bell สองจังหวะ
         playSoftNote({ freq: 587.33, offset: 0, duration: 0.12, gain: 0.065, wave: "sine", filterFreq: 2100 });
         playSoftNote({ freq: 880.0, offset: 0.075, duration: 0.22, gain: 0.065, wave: "sine", filterFreq: 2400 });
       } else if (type === "done") {
-        // คอร์ด 3 โน้ตละมุนๆ ไล่ระดับขึ้น (C5 - E5 - G5)
         playSoftNote({ freq: 523.25, offset: 0, duration: 0.14, gain: 0.06, wave: "sine", filterFreq: 2000 });
         playSoftNote({ freq: 659.25, offset: 0.065, duration: 0.16, gain: 0.065, wave: "sine", filterFreq: 2200 });
         playSoftNote({ freq: 783.99, offset: 0.13, duration: 0.28, gain: 0.07, wave: "sine", filterFreq: 2500 });
       } else if (type === "delete") {
-        // เสียงต่ำลงนุ่มๆ ไม่แข็งกระด้าง
         playSoftNote({ freq: 330, endFreq: 220, offset: 0, duration: 0.16, gain: 0.055, wave: "triangle", filterFreq: 950 });
       }
     };
@@ -1076,6 +1178,28 @@
       } else {
         showToast("ปิดเสียงเอฟเฟกต์แล้ว");
       }
+    };
+
+    function updateManageModeUI() {
+      const btn = document.getElementById("manageModeBtn");
+      const hint = document.getElementById("manageModeHint");
+      if (!btn || !hint) return;
+      if (manageMode) {
+        btn.classList.add("btn-manage-active");
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> เสร็จสิ้นการจัดการ';
+        hint.textContent = "กำลังแสดงปุ่มแก้ไขและลบรายการงาน";
+      } else {
+        btn.classList.remove("btn-manage-active");
+        btn.innerHTML = '<i class="fa-solid fa-sliders"></i> เปิดโหมดแก้ไข/ลบ';
+        hint.textContent = "มุมมองอ่านง่าย (ซ่อนปุ่มแก้ไข/ลบ)";
+      }
+    }
+
+    window.toggleManageMode = () => {
+      manageMode = !manageMode;
+      playSound(manageMode ? "open" : "click");
+      updateManageModeUI();
+      renderTasks();
     };
 
     function showToast(text) {
@@ -1110,14 +1234,17 @@
         await setDoc(roomRef, {
           name: roomName,
           subjects: DEFAULT_SUBJECTS,
+          taskTypes: DEFAULT_TASK_TYPES,
           createdBy: currentUser?.uid || "anonymous",
           createdAt: serverTimestamp()
         });
         subjects = [...DEFAULT_SUBJECTS];
+        taskTypes = [...DEFAULT_TASK_TYPES];
       } else {
         const data = snap.data();
         roomName = data.name || roomId;
         subjects = Array.isArray(data.subjects) && data.subjects.length ? data.subjects : [...DEFAULT_SUBJECTS];
+        taskTypes = Array.isArray(data.taskTypes) && data.taskTypes.length ? data.taskTypes : [...DEFAULT_TASK_TYPES];
       }
 
       currentRoomId = roomId;
@@ -1133,6 +1260,8 @@
       document.getElementById("modalRoomCode").textContent = currentRoomId;
       renderSubjectOptions();
       renderSubjectPreview();
+      renderTaskTypeOptions();
+      renderTaskTypePreview();
     }
 
     function updateTeacherSuggestions() {
@@ -1160,6 +1289,9 @@
           localStorage.setItem("studytrack_room_name", currentRoomName);
           if (Array.isArray(data.subjects) && data.subjects.length) {
             subjects = data.subjects;
+          }
+          if (Array.isArray(data.taskTypes) && data.taskTypes.length) {
+            taskTypes = data.taskTypes;
           }
           updateRoomUI();
           renderTasks();
@@ -1267,6 +1399,7 @@
       showToast(`สร้างห้อง "${nameInput}" (${code}) สำเร็จ!`);
     };
 
+    // จัดการรายวิชา
     window.openSubjectModal = () => {
       resetSubjectForm();
       renderSubjectPreview();
@@ -1392,6 +1525,130 @@
       showToast(`ลบรายวิชา "${target.name}" แล้ว`);
     };
 
+    // จัดการประเภทงาน (เพิ่ม / แก้ไข / ลบ)
+    window.openTaskTypeModal = () => {
+      resetTaskTypeForm();
+      renderTaskTypePreview();
+      openModal("taskTypeModal");
+    };
+
+    window.resetTaskTypeForm = () => {
+      document.getElementById("editTaskTypeIndex").value = "-1";
+      document.getElementById("taskTypeModalTitle").textContent = "จัดการประเภทงาน";
+      document.getElementById("taskTypeFormLabel").textContent = "ชื่อประเภทงานใหม่";
+      document.getElementById("newTaskTypeName").value = "";
+      document.getElementById("taskTypeSubmitBtn").innerHTML = '<i class="fa-solid fa-plus"></i> เพิ่มประเภทงาน';
+      document.getElementById("cancelEditTaskTypeBtn").style.display = "none";
+    };
+
+    window.startEditTaskType = (idx) => {
+      playSound("click");
+      const typeName = taskTypes[idx];
+      if (!typeName) return;
+      document.getElementById("editTaskTypeIndex").value = String(idx);
+      document.getElementById("taskTypeModalTitle").textContent = "แก้ไขประเภทงาน";
+      document.getElementById("taskTypeFormLabel").textContent = "แก้ไขชื่อประเภทงาน";
+      document.getElementById("newTaskTypeName").value = typeName;
+      document.getElementById("taskTypeSubmitBtn").innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไข';
+      document.getElementById("cancelEditTaskTypeBtn").style.display = "inline-flex";
+    };
+
+    function renderTaskTypePreview() {
+      const wrap = document.getElementById("taskTypeListPreview");
+      if (!wrap) return;
+      if (!taskTypes.length) {
+        wrap.innerHTML = `<div style="font-size:0.84rem; color:var(--text-muted);">ยังไม่มีประเภทงานในห้องนี้</div>`;
+        return;
+      }
+
+      wrap.innerHTML = taskTypes
+        .map(
+          (typeName, idx) => `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; background:var(--bg-input); border:1px solid var(--border); padding:8px 12px; border-radius:10px;">
+            <span class="type-badge">${escapeHtml(typeName)}</span>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="startEditTaskType(${idx})">
+                <i class="fa-solid fa-pen"></i> แก้ไข
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deleteTaskType(${idx})">
+                <i class="fa-solid fa-trash"></i> ลบ
+              </button>
+            </div>
+          </div>`
+        )
+        .join("");
+    }
+
+    window.saveTaskType = async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("newTaskTypeName").value.trim();
+      const editIdx = Number(document.getElementById("editTaskTypeIndex").value);
+      if (!name || !currentRoomId) return;
+
+      const duplicate = taskTypes.some((t, i) => t === name && i !== editIdx);
+      if (duplicate) {
+        return alert("มีประเภทงานนี้อยู่แล้วครับ");
+      }
+
+      let updated = [...taskTypes];
+      if (editIdx >= 0 && updated[editIdx]) {
+        const oldName = updated[editIdx];
+        updated[editIdx] = name;
+
+        if (oldName !== name) {
+          const matchingTasks = tasks.filter((t) => t.taskType === oldName);
+          await Promise.all(
+            matchingTasks.map((t) => updateDoc(doc(db, "tasks", t.id), { taskType: name }))
+          );
+        }
+      } else {
+        updated.push(name);
+      }
+
+      await updateDoc(doc(db, "rooms", currentRoomId), { taskTypes: updated });
+      taskTypes = updated;
+      resetTaskTypeForm();
+      renderTaskTypeOptions(name);
+      renderTaskTypePreview();
+      renderTasks();
+      playSound("save");
+      showToast(editIdx >= 0 ? "บันทึกการแก้ไขประเภทงานแล้ว" : `เพิ่มประเภท "${name}" แล้ว`);
+    };
+
+    window.deleteTaskType = async (idx) => {
+      const target = taskTypes[idx];
+      if (!target || !currentRoomId) return;
+      if (!confirm(`ต้องการลบประเภทงาน "${target}" ใช่ไหม?`)) return;
+
+      const updated = taskTypes.filter((_, i) => i !== idx);
+      await updateDoc(doc(db, "rooms", currentRoomId), { taskTypes: updated });
+      taskTypes = updated;
+
+      if (Number(document.getElementById("editTaskTypeIndex").value) === idx) {
+        resetTaskTypeForm();
+      }
+      renderTaskTypeOptions();
+      renderTaskTypePreview();
+      renderTasks();
+      playSound("delete");
+      showToast(`ลบประเภทงาน "${target}" แล้ว`);
+    };
+
+    function renderTaskTypeOptions(preferSelect = null) {
+      const selectEl = document.getElementById("taskType");
+      if (!selectEl) return;
+      const prevVal = preferSelect || selectEl.value;
+      const list = taskTypes.length ? taskTypes : DEFAULT_TASK_TYPES;
+
+      selectEl.innerHTML = list
+        .map((t) => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`)
+        .join("");
+
+      if ([...selectEl.options].some((o) => o.value === prevVal)) {
+        selectEl.value = prevVal;
+      }
+    }
+
     function renderSubjectOptions() {
       const taskSelect = document.getElementById("taskSubject");
       const filterSelect = document.getElementById("subjectFilter");
@@ -1425,6 +1682,7 @@
 
     window.openTaskModal = (taskId = null) => {
       renderSubjectOptions();
+      renderTaskTypeOptions();
       updateTeacherSuggestions();
       const form = document.getElementById("taskForm");
       form.reset();
@@ -1438,6 +1696,7 @@
         document.getElementById("taskModalTitle").textContent = "แก้ไขงาน";
         document.getElementById("editTaskId").value = t.id;
         document.getElementById("taskSubject").value = t.subject;
+        renderTaskTypeOptions(t.taskType || (taskTypes[0] || DEFAULT_TASK_TYPES[0]));
         document.getElementById("taskTitle").value = t.title;
         document.getElementById("taskTeacher").value = t.teacher || "";
         document.getElementById("taskDesc").value = t.description || "";
@@ -1475,6 +1734,7 @@
       const payload = {
         roomId: currentRoomId,
         subject: document.getElementById("taskSubject").value,
+        taskType: document.getElementById("taskType").value,
         title: document.getElementById("taskTitle").value.trim(),
         teacher: document.getElementById("taskTeacher").value.trim(),
         dueDate: dueDateVal,
@@ -1577,7 +1837,7 @@
         if (statusFilter === "urgent" && !isUrgentOrOverdue(t)) return false;
         if (subjFilter !== "all" && t.subject !== subjFilter) return false;
         if (search) {
-          const hay = `${t.title || ""} ${t.teacher || ""} ${t.description || ""} ${t.subject || ""}`.toLowerCase();
+          const hay = `${t.title || ""} ${t.taskType || ""} ${t.teacher || ""} ${t.description || ""} ${t.subject || ""}`.toLowerCase();
           if (!hay.includes(search)) return false;
         }
         return true;
@@ -1610,15 +1870,29 @@
           const subjObj = subjects.find((s) => s.name === t.subject) || { color: "#93c5fd" };
           const due = getDueMeta(t.dueDate, t.completed);
           const delay = Math.min(index * 45, 300);
+          const typeBadge = t.taskType
+            ? `<span class="type-badge">${escapeHtml(t.taskType)}</span>`
+            : "";
           const teacherBadge = t.teacher
             ? `<span class="teacher-badge"><i class="fa-solid fa-chalkboard-user"></i> ส่ง: ${escapeHtml(t.teacher)}</span>`
+            : "";
+          const manageButtons = manageMode
+            ? `<div class="manage-only-actions">
+                <button class="btn btn-secondary btn-sm" onclick="openTaskModal('${t.id}')">
+                  <i class="fa-solid fa-pen"></i> แก้ไข
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="deleteTask('${t.id}')">
+                  <i class="fa-solid fa-trash"></i> ลบ
+                </button>
+              </div>`
             : "";
 
           return `
             <article class="task-card ${t.completed ? "done" : ""}" style="border-left-color:${subjObj.color}; animation-delay:${delay}ms;">
-              <div>
+              <div class="task-body">
                 <div class="task-top">
                   <span class="subject-tag" style="background:${subjObj.color};">${escapeHtml(t.subject)}</span>
+                  ${typeBadge}
                   <span class="due-badge ${due.cls}">${due.text}</span>
                   ${teacherBadge}
                 </div>
@@ -1630,12 +1904,7 @@
                   <i class="fa-solid ${t.completed ? "fa-rotate-left" : "fa-check"}"></i>
                   ${t.completed ? "ยกเลิกเสร็จ" : "เสร็จแล้ว"}
                 </button>
-                <button class="btn btn-secondary btn-sm" onclick="openTaskModal('${t.id}')">
-                  <i class="fa-solid fa-pen"></i> แก้ไข
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="deleteTask('${t.id}')">
-                  <i class="fa-solid fa-trash"></i> ลบ
-                </button>
+                ${manageButtons}
               </div>
             </article>`;
         })
