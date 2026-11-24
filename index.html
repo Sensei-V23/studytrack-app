@@ -49,7 +49,7 @@
         radial-gradient(circle at 85% 25%, rgba(129, 140, 248, 0.08), transparent 40%);
       color: var(--text-main);
       min-height: 100vh;
-      padding-bottom: 92px;
+      padding-bottom: 96px;
       line-height: 1.5;
       overflow-x: hidden;
     }
@@ -270,15 +270,16 @@
 
     .btn {
       border: none;
-      border-radius: 10px;
-      padding: 9px 14px;
-      font-size: 0.88rem;
+      border-radius: 11px;
+      padding: 10px 15px;
+      min-height: 40px;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 7px;
       transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
@@ -326,9 +327,10 @@
     }
 
     .btn-sm {
-      padding: 6px 10px;
-      font-size: 0.78rem;
-      border-radius: 8px;
+      padding: 8px 12px;
+      min-height: 38px;
+      font-size: 0.82rem;
+      border-radius: 10px;
     }
 
     /* Stats Grid */
@@ -359,12 +361,12 @@
     }
 
     .stat-label {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
     }
 
     .stat-value {
-      font-size: 1.5rem;
+      font-size: 1.55rem;
       font-weight: 700;
       margin-top: 4px;
     }
@@ -381,25 +383,31 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .list-toolbar-hint {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
     }
 
     .input, select, textarea {
       width: 100%;
+      min-height: 44px;
       background: var(--bg-input);
       border: 1px solid var(--border);
       color: var(--text-main);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 0.9rem;
+      border-radius: 11px;
+      padding: 10px 13px;
+      font-size: 0.92rem;
       outline: none;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea {
+      min-height: 84px;
     }
 
     .input:focus, select:focus, textarea:focus {
@@ -416,21 +424,60 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin-top: 8px;
-      font-size: 0.84rem;
+      margin-top: 10px;
+      font-size: 0.86rem;
       color: var(--text-main);
       cursor: pointer;
       user-select: none;
     }
 
     .checkbox-row input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
+      min-height: 18px;
       accent-color: var(--accent);
       cursor: pointer;
     }
 
-    /* Task Cards */
+    /* Sections & Task Cards */
+    .section-block {
+      margin-bottom: 22px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      background: rgba(30, 41, 59, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+
+    .section-count {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+    }
+
+    .section-count.done-count {
+      background: rgba(16, 185, 129, 0.16);
+      color: #6ee7b7;
+    }
+
     .task-list {
       display: flex;
       flex-direction: column;
@@ -441,8 +488,8 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-left: 5px solid var(--accent);
-      border-radius: 14px;
-      padding: 14px 16px;
+      border-radius: 15px;
+      padding: 15px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -458,11 +505,14 @@
     }
 
     .task-card.done {
-      opacity: 0.62;
+      opacity: 0.72;
+      border-left-color: var(--success) !important;
+      background: rgba(30, 41, 59, 0.68);
     }
 
     .task-card.done .task-title {
       text-decoration: line-through;
+      color: var(--text-muted);
     }
 
     .task-body {
@@ -475,21 +525,21 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 6px;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
     }
 
     .subject-tag {
-      font-size: 0.76rem;
-      font-weight: 600;
-      padding: 2px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
       border-radius: 999px;
       color: #0f172a;
     }
 
     .type-badge {
-      font-size: 0.74rem;
+      font-size: 0.76rem;
       font-weight: 500;
-      padding: 2px 9px;
+      padding: 3px 10px;
       border-radius: 999px;
       background: rgba(56, 189, 248, 0.14);
       color: #7dd3fc;
@@ -497,8 +547,8 @@
     }
 
     .due-badge {
-      font-size: 0.74rem;
-      padding: 2px 9px;
+      font-size: 0.76rem;
+      padding: 3px 10px;
       border-radius: 999px;
       background: rgba(148, 163, 184, 0.15);
       color: var(--text-main);
@@ -515,8 +565,8 @@
     }
 
     .teacher-badge {
-      font-size: 0.74rem;
-      padding: 2px 9px;
+      font-size: 0.76rem;
+      padding: 3px 10px;
       border-radius: 999px;
       background: rgba(129, 140, 248, 0.16);
       color: #c7d2fe;
@@ -527,13 +577,13 @@
     }
 
     .task-title {
-      font-size: 1rem;
+      font-size: 1.03rem;
       font-weight: 600;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     .task-desc {
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       color: var(--text-muted);
       white-space: pre-line;
     }
@@ -541,20 +591,20 @@
     .task-actions {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       flex-shrink: 0;
     }
 
     .manage-only-actions {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       animation: fadeUp 0.2s ease both;
     }
 
     /* Empty State */
     .empty-state {
       text-align: center;
-      padding: 48px 20px;
+      padding: 38px 20px;
       background: var(--bg-card);
       border: 1px dashed var(--border);
       border-radius: 16px;
@@ -573,7 +623,7 @@
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
-      padding: 8px 12px;
+      padding: 8px 10px;
       z-index: 50;
     }
 
@@ -584,11 +634,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 3px;
+      min-height: 46px;
       font-size: 0.75rem;
       cursor: pointer;
-      padding: 4px 12px;
-      border-radius: 10px;
+      padding: 4px 10px;
+      border-radius: 12px;
       transition: transform 0.15s ease, color 0.15s ease;
     }
 
@@ -647,25 +699,25 @@
     }
 
     .form-group {
-      margin-bottom: 12px;
+      margin-bottom: 13px;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.84rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
     .color-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
     }
 
     .color-swatch {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid transparent;
@@ -701,15 +753,15 @@
     /* Toast แจ้งเตือนมุมล่าง */
     .toast {
       position: fixed;
-      bottom: 84px;
+      bottom: 86px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
       background: rgba(15, 23, 42, 0.96);
       border: 1px solid var(--accent);
       color: var(--text-main);
-      padding: 9px 16px;
+      padding: 10px 18px;
       border-radius: 999px;
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       font-weight: 500;
       box-shadow: 0 10px 28px rgba(2, 6, 23, 0.45);
       opacity: 0;
@@ -733,19 +785,24 @@
       .task-card {
         flex-direction: column;
         align-items: stretch;
+        padding: 15px;
       }
       .task-actions {
         flex-direction: row;
+        flex-wrap: wrap;
         width: 100%;
+        margin-top: 4px;
       }
       .task-actions > .btn {
-        flex: 1;
+        flex: 1 1 100%;
+        min-height: 44px;
       }
       .manage-only-actions {
-        flex: 1.2;
+        flex: 1 1 100%;
       }
       .manage-only-actions .btn {
         flex: 1;
+        min-height: 42px;
       }
     }
   </style>
@@ -783,17 +840,11 @@
       </div>
 
       <div class="header-actions">
-        <button class="btn btn-secondary btn-sm" id="soundToggleBtn" onclick="toggleSound()" title="เปิด/ปิดเสียงเอฟเฟกต์">
-          <i class="fa-solid fa-volume-high"></i>
-        </button>
         <button class="btn btn-secondary btn-sm" onclick="openRoomModal()">
           <i class="fa-solid fa-key"></i> ห้องเรียน
         </button>
         <button class="btn btn-secondary btn-sm" onclick="openSubjectModal()">
           <i class="fa-solid fa-palette"></i> รายวิชา
-        </button>
-        <button class="btn btn-secondary btn-sm" onclick="openTaskTypeModal()">
-          <i class="fa-solid fa-tags"></i> ประเภทงาน
         </button>
         <button class="btn btn-primary btn-sm" onclick="openTaskModal()">
           <i class="fa-solid fa-plus"></i> เพิ่มงาน
@@ -804,7 +855,7 @@
     <!-- Stats -->
     <section class="stats-grid">
       <div class="stat-card active" data-filter="all" onclick="setStatusFilter('all')">
-        <div class="stat-label">งานทั้งหมด</div>
+        <div class="stat-label">งานที่ต้องทำ</div>
         <div class="stat-value" id="statAll">0</div>
       </div>
       <div class="stat-card" data-filter="pending" onclick="setStatusFilter('pending')">
@@ -824,10 +875,10 @@
     <!-- Search & Filter -->
     <section class="filter-bar">
       <input type="text" id="searchInput" class="input" placeholder="🔍 ค้นหาชื่องาน, ประเภทงาน, ชื่อครู..." oninput="renderTasks()" />
-      <select id="subjectFilter" onchange="playSound('click'); renderTasks()">
+      <select id="subjectFilter" onchange="renderTasks()">
         <option value="all">ทุกวิชา</option>
       </select>
-      <select id="sortSelect" onchange="playSound('click'); renderTasks()">
+      <select id="sortSelect" onchange="renderTasks()">
         <option value="dueAsc">เรียงตามวันส่ง (เร็วสุดก่อน)</option>
         <option value="dueDesc">เรียงตามวันส่ง (ช้าสุดก่อน)</option>
         <option value="newest">เพิ่มล่าสุดก่อน</option>
@@ -842,15 +893,19 @@
       </button>
     </section>
 
-    <!-- Task List -->
-    <main class="task-list" id="taskList"></main>
+    <!-- Task List Container (แยกงานที่ต้องทำ กับ หัวข้อ เสร็จแล้ว) -->
+    <main id="taskContainer"></main>
   </div>
 
   <!-- Mobile Bottom Navigation -->
   <nav class="bottom-nav">
-    <button class="nav-btn active" onclick="setStatusFilter('all'); setActiveNav(this)">
-      <i class="fa-solid fa-house"></i>
-      <span>งานทั้งหมด</span>
+    <button class="nav-btn active" id="navAllBtn" onclick="setStatusFilter('all'); setActiveNav(this)">
+      <i class="fa-solid fa-list-check"></i>
+      <span>งานที่ทำ</span>
+    </button>
+    <button class="nav-btn" id="navDoneBtn" onclick="setStatusFilter('done'); setActiveNav(this)">
+      <i class="fa-solid fa-circle-check"></i>
+      <span>เสร็จแล้ว</span>
     </button>
     <button class="nav-btn" onclick="openTaskModal()">
       <i class="fa-solid fa-circle-plus"></i>
@@ -859,10 +914,6 @@
     <button class="nav-btn" onclick="openRoomModal()">
       <i class="fa-solid fa-share-nodes"></i>
       <span>แชร์รหัสห้อง</span>
-    </button>
-    <button class="nav-btn" onclick="openSubjectModal()">
-      <i class="fa-solid fa-layer-group"></i>
-      <span>รายวิชา</span>
     </button>
   </nav>
 
@@ -881,19 +932,14 @@
         </div>
         <div class="form-group">
           <label>ประเภทงาน *</label>
-          <div style="display:flex; gap:8px;">
-            <select id="taskType" required style="flex:1;"></select>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="openTaskTypeModal()" title="เพิ่ม / แก้ไข / ลบประเภทงาน">
-              <i class="fa-solid fa-gear"></i> จัดการ
-            </button>
-          </div>
+          <select id="taskType" required></select>
         </div>
         <div class="form-group">
           <label>ชื่องาน / รายละเอียดหัวข้อ *</label>
           <input type="text" id="taskTitle" class="input" placeholder="เช่น หน้า 24-26 หรือ วาดรูปวันคริสต์มาส" required />
         </div>
         <div class="form-group">
-          <label>ส่งใคร (ชื่อครู)</label>
+          <label>ส่งครู (ชื่อครูผู้สอน)</label>
           <input type="text" id="taskTeacher" class="input" list="teacherSuggestions" placeholder="เช่น ครูสมศรี, อาจารย์วิทย์ (ไม่ระบุก็ได้)" autocomplete="off" />
           <datalist id="teacherSuggestions"></datalist>
         </div>
@@ -909,7 +955,7 @@
           <label>รายละเอียดเพิ่มเติม</label>
           <textarea id="taskDesc" rows="3" placeholder="ระบุหน้าหนังสือ เลขข้อ หรือคำสั่งครู..."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;">
+        <button type="submit" class="btn btn-primary" style="width:100%; min-height:46px;">
           <i class="fa-solid fa-check"></i> บันทึกลงห้องเรียน
         </button>
       </form>
@@ -967,7 +1013,7 @@
         <input type="hidden" id="editSubjectIndex" value="-1" />
         <div class="form-group">
           <label id="subjectFormLabel">ชื่อรายวิชาใหม่</label>
-          <input type="text" id="newSubjectName" class="input" placeholder="เช่น ฟิสิกส์, สังคมศึกษา" required />
+          <input type="text" id="newSubjectName" class="input" placeholder="เช่น ฟิสิกส์, ศิลปะ" required />
         </div>
         <div class="form-group">
           <label>เลือกสีพาสเทลประจำวิชา</label>
@@ -984,34 +1030,6 @@
       </form>
 
       <div id="subjectListPreview" style="display:flex; flex-direction:column; gap:8px;"></div>
-    </div>
-  </div>
-
-  <!-- Task Type Modal (เพิ่ม / แก้ไข / ลบ ประเภทงาน) -->
-  <div class="modal-backdrop" id="taskTypeModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 id="taskTypeModalTitle">จัดการประเภทงาน</h2>
-        <button class="btn btn-secondary btn-sm" onclick="closeModal('taskTypeModal')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <form onsubmit="saveTaskType(event)" style="margin-bottom:16px;">
-        <input type="hidden" id="editTaskTypeIndex" value="-1" />
-        <div class="form-group">
-          <label id="taskTypeFormLabel">ชื่อประเภทงานใหม่</label>
-          <input type="text" id="newTaskTypeName" class="input" placeholder="เช่น แบบฝึกหัด, ใบงาน, โครงงาน, ท่องจำ" required />
-        </div>
-        <div style="display:flex; gap:8px;">
-          <button type="submit" class="btn btn-primary" style="flex:1;" id="taskTypeSubmitBtn">
-            <i class="fa-solid fa-plus"></i> เพิ่มประเภทงาน
-          </button>
-          <button type="button" class="btn btn-secondary" id="cancelEditTaskTypeBtn" style="display:none;" onclick="resetTaskTypeForm()">
-            ยกเลิก
-          </button>
-        </div>
-      </form>
-
-      <div id="taskTypeListPreview" style="display:flex; flex-direction:column; gap:8px;"></div>
     </div>
   </div>
 
@@ -1044,15 +1062,23 @@
     ];
 
     const DEFAULT_SUBJECTS = [
-      { name: "คณิตศาสตร์", color: "#93c5fd" },
-      { name: "วิทยาศาสตร์", color: "#86efac" },
-      { name: "ภาษาไทย", color: "#fde047" },
-      { name: "ภาษาอังกฤษ", color: "#c4b5fd" },
-      { name: "สังคมศึกษา", color: "#fdba74" },
-      { name: "วิทยาการคำนวณ", color: "#67e8f9" }
+      { name: "คณิต", color: "#93c5fd" },
+      { name: "วิทย์", color: "#86efac" },
+      { name: "ไทย", color: "#fde047" },
+      { name: "อังกฤษ", color: "#c4b5fd" },
+      { name: "สังคม", color: "#fdba74" },
+      { name: "สุขศึกษา", color: "#f9a8d4" },
+      { name: "วิทย์เพิ่มเติม", color: "#6ee7b7" },
+      { name: "คณิตเพิ่มเติม", color: "#a5b4fc" },
+      { name: "จีน", color: "#fca5a5" },
+      { name: "แนะแนว", color: "#bef264" },
+      { name: "ประวัติศาสตร์", color: "#fcd34d" },
+      { name: "วิทยาการคำนวณ/คอม", color: "#67e8f9" },
+      { name: "การงาน", color: "#fdba74" },
+      { name: "การงานประดิษฐ์", color: "#f0abfc" }
     ];
 
-    const DEFAULT_TASK_TYPES = [
+    const TASK_TYPE_OPTIONS = [
       "แบบฝึกหัด",
       "ใบงาน",
       "ส่งสมุด",
@@ -1065,21 +1091,18 @@
     let currentRoomId = localStorage.getItem("studytrack_room_id") || "";
     let currentRoomName = localStorage.getItem("studytrack_room_name") || "";
     let subjects = [...DEFAULT_SUBJECTS];
-    let taskTypes = [...DEFAULT_TASK_TYPES];
     let tasks = [];
     let statusFilter = "all";
     let selectedColor = PASTEL_COLORS[0];
     let unsubscribeTasks = null;
     let unsubscribeRoom = null;
-    let soundEnabled = localStorage.getItem("studytrack_sound") !== "off";
     let manageMode = false;
-    let audioCtx = null;
+    let doneSectionExpanded = true;
     let toastTimer = null;
 
-    // ซ่อนหน้า Splash Screen หลังเปิดแอป 1.2 วินาที
     window.addEventListener("load", () => {
-      updateSoundButtonUI();
       updateManageModeUI();
+      renderTaskTypeOptions();
       setTimeout(() => {
         const splash = document.getElementById("splashScreen");
         if (splash) splash.classList.add("hide");
@@ -1089,96 +1112,6 @@
         navigator.serviceWorker.register("./sw.js").catch((err) => console.log("SW:", err));
       }
     });
-
-    // ระบบเสียงเอฟเฟกต์โทนใหม่ที่นุ่มหูและมีมิติขึ้น (Web Audio API)
-    function getAudioContext() {
-      if (!audioCtx) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (AudioContextClass) audioCtx = new AudioContextClass();
-      }
-      if (audioCtx && audioCtx.state === "suspended") {
-        audioCtx.resume().catch(() => {});
-      }
-      return audioCtx;
-    }
-
-    window.playSound = (type = "click") => {
-      if (!soundEnabled) return;
-      const ctx = getAudioContext();
-      if (!ctx) return;
-
-      const now = ctx.currentTime;
-
-      const playSoftNote = ({
-        freq,
-        endFreq = null,
-        offset = 0,
-        duration = 0.14,
-        gain = 0.06,
-        wave = "sine",
-        filterFreq = 1800
-      }) => {
-        const osc = ctx.createOscillator();
-        const filter = ctx.createBiquadFilter();
-        const amp = ctx.createGain();
-
-        osc.type = wave;
-        osc.frequency.setValueAtTime(freq, now + offset);
-        if (endFreq) {
-          osc.frequency.exponentialRampToValueAtTime(endFreq, now + offset + duration);
-        }
-
-        filter.type = "lowpass";
-        filter.frequency.setValueAtTime(filterFreq, now + offset);
-
-        amp.gain.setValueAtTime(0.0001, now + offset);
-        amp.gain.linearRampToValueAtTime(gain, now + offset + 0.012);
-        amp.gain.exponentialRampToValueAtTime(0.0001, now + offset + duration);
-
-        osc.connect(filter);
-        filter.connect(amp);
-        amp.connect(ctx.destination);
-
-        osc.start(now + offset);
-        osc.stop(now + offset + duration + 0.03);
-      };
-
-      if (type === "click") {
-        playSoftNote({ freq: 340, endFreq: 520, offset: 0, duration: 0.055, gain: 0.045, wave: "sine", filterFreq: 1400 });
-      } else if (type === "open") {
-        playSoftNote({ freq: 392.0, offset: 0, duration: 0.09, gain: 0.045, wave: "sine", filterFreq: 1600 });
-        playSoftNote({ freq: 523.25, offset: 0.045, duration: 0.13, gain: 0.05, wave: "sine", filterFreq: 1800 });
-      } else if (type === "save") {
-        playSoftNote({ freq: 587.33, offset: 0, duration: 0.12, gain: 0.065, wave: "sine", filterFreq: 2100 });
-        playSoftNote({ freq: 880.0, offset: 0.075, duration: 0.22, gain: 0.065, wave: "sine", filterFreq: 2400 });
-      } else if (type === "done") {
-        playSoftNote({ freq: 523.25, offset: 0, duration: 0.14, gain: 0.06, wave: "sine", filterFreq: 2000 });
-        playSoftNote({ freq: 659.25, offset: 0.065, duration: 0.16, gain: 0.065, wave: "sine", filterFreq: 2200 });
-        playSoftNote({ freq: 783.99, offset: 0.13, duration: 0.28, gain: 0.07, wave: "sine", filterFreq: 2500 });
-      } else if (type === "delete") {
-        playSoftNote({ freq: 330, endFreq: 220, offset: 0, duration: 0.16, gain: 0.055, wave: "triangle", filterFreq: 950 });
-      }
-    };
-
-    function updateSoundButtonUI() {
-      const btn = document.getElementById("soundToggleBtn");
-      if (!btn) return;
-      btn.innerHTML = soundEnabled
-        ? '<i class="fa-solid fa-volume-high"></i>'
-        : '<i class="fa-solid fa-volume-xmark" style="color:var(--text-muted);"></i>';
-    }
-
-    window.toggleSound = () => {
-      soundEnabled = !soundEnabled;
-      localStorage.setItem("studytrack_sound", soundEnabled ? "on" : "off");
-      updateSoundButtonUI();
-      if (soundEnabled) {
-        playSound("save");
-        showToast("เปิดเสียงเอฟเฟกต์แล้ว");
-      } else {
-        showToast("ปิดเสียงเอฟเฟกต์แล้ว");
-      }
-    };
 
     function updateManageModeUI() {
       const btn = document.getElementById("manageModeBtn");
@@ -1197,8 +1130,12 @@
 
     window.toggleManageMode = () => {
       manageMode = !manageMode;
-      playSound(manageMode ? "open" : "click");
       updateManageModeUI();
+      renderTasks();
+    };
+
+    window.toggleDoneSection = () => {
+      doneSectionExpanded = !doneSectionExpanded;
       renderTasks();
     };
 
@@ -1234,17 +1171,14 @@
         await setDoc(roomRef, {
           name: roomName,
           subjects: DEFAULT_SUBJECTS,
-          taskTypes: DEFAULT_TASK_TYPES,
           createdBy: currentUser?.uid || "anonymous",
           createdAt: serverTimestamp()
         });
         subjects = [...DEFAULT_SUBJECTS];
-        taskTypes = [...DEFAULT_TASK_TYPES];
       } else {
         const data = snap.data();
         roomName = data.name || roomId;
         subjects = Array.isArray(data.subjects) && data.subjects.length ? data.subjects : [...DEFAULT_SUBJECTS];
-        taskTypes = Array.isArray(data.taskTypes) && data.taskTypes.length ? data.taskTypes : [...DEFAULT_TASK_TYPES];
       }
 
       currentRoomId = roomId;
@@ -1261,7 +1195,6 @@
       renderSubjectOptions();
       renderSubjectPreview();
       renderTaskTypeOptions();
-      renderTaskTypePreview();
     }
 
     function updateTeacherSuggestions() {
@@ -1289,9 +1222,6 @@
           localStorage.setItem("studytrack_room_name", currentRoomName);
           if (Array.isArray(data.subjects) && data.subjects.length) {
             subjects = data.subjects;
-          }
-          if (Array.isArray(data.taskTypes) && data.taskTypes.length) {
-            taskTypes = data.taskTypes;
           }
           updateRoomUI();
           renderTasks();
@@ -1330,11 +1260,9 @@
     });
 
     window.openModal = (id) => {
-      playSound("open");
       document.getElementById(id).classList.add("open");
     };
     window.closeModal = (id) => {
-      playSound("click");
       document.getElementById(id).classList.remove("open");
     };
 
@@ -1344,11 +1272,16 @@
     };
 
     window.setStatusFilter = (filter) => {
-      playSound("click");
       statusFilter = filter;
       document.querySelectorAll(".stat-card").forEach((card) => {
         card.classList.toggle("active", card.dataset.filter === filter);
       });
+      document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("active"));
+      if (filter === "done") {
+        document.getElementById("navDoneBtn")?.classList.add("active");
+      } else if (filter === "all") {
+        document.getElementById("navAllBtn")?.classList.add("active");
+      }
       renderTasks();
     };
 
@@ -1359,13 +1292,11 @@
 
     window.copyRoomCode = async () => {
       if (!currentRoomId) return;
-      playSound("save");
       await navigator.clipboard?.writeText(currentRoomId);
       showToast(`คัดลอกรหัสห้อง "${currentRoomId}" แล้ว`);
     };
 
     window.shareAppLink = async () => {
-      playSound("click");
       const shareText = `เข้าร่วมห้องเรียน "${currentRoomName}" บน StudyTrack TH ด้วยรหัส: ${currentRoomId}`;
       if (navigator.share) {
         await navigator.share({ title: "StudyTrack TH", text: shareText, url: window.location.href }).catch(() => {});
@@ -1385,7 +1316,6 @@
       await ensureRoomExists(code, snap.data().name || code);
       document.getElementById("joinRoomInput").value = "";
       closeModal("roomModal");
-      playSound("save");
       showToast(`เข้าสู่ห้อง "${snap.data().name || code}" แล้ว`);
     };
 
@@ -1395,7 +1325,6 @@
       await ensureRoomExists(code, nameInput);
       document.getElementById("newRoomNameInput").value = "";
       closeModal("roomModal");
-      playSound("save");
       showToast(`สร้างห้อง "${nameInput}" (${code}) สำเร็จ!`);
     };
 
@@ -1418,7 +1347,6 @@
     };
 
     window.startEditSubject = (idx) => {
-      playSound("click");
       const subj = subjects[idx];
       if (!subj) return;
       document.getElementById("editSubjectIndex").value = String(idx);
@@ -1439,7 +1367,6 @@
         div.className = "color-swatch" + (color === selectedColor ? " selected" : "");
         div.style.backgroundColor = color;
         div.onclick = () => {
-          playSound("click");
           selectedColor = color;
           initColorSwatches();
         };
@@ -1503,7 +1430,6 @@
       resetSubjectForm();
       updateRoomUI();
       renderTasks();
-      playSound("save");
       showToast(editIdx >= 0 ? "บันทึกการแก้ไขรายวิชาแล้ว" : `เพิ่มวิชา "${name}" แล้ว`);
     };
 
@@ -1521,126 +1447,15 @@
       }
       updateRoomUI();
       renderTasks();
-      playSound("delete");
       showToast(`ลบรายวิชา "${target.name}" แล้ว`);
-    };
-
-    // จัดการประเภทงาน (เพิ่ม / แก้ไข / ลบ)
-    window.openTaskTypeModal = () => {
-      resetTaskTypeForm();
-      renderTaskTypePreview();
-      openModal("taskTypeModal");
-    };
-
-    window.resetTaskTypeForm = () => {
-      document.getElementById("editTaskTypeIndex").value = "-1";
-      document.getElementById("taskTypeModalTitle").textContent = "จัดการประเภทงาน";
-      document.getElementById("taskTypeFormLabel").textContent = "ชื่อประเภทงานใหม่";
-      document.getElementById("newTaskTypeName").value = "";
-      document.getElementById("taskTypeSubmitBtn").innerHTML = '<i class="fa-solid fa-plus"></i> เพิ่มประเภทงาน';
-      document.getElementById("cancelEditTaskTypeBtn").style.display = "none";
-    };
-
-    window.startEditTaskType = (idx) => {
-      playSound("click");
-      const typeName = taskTypes[idx];
-      if (!typeName) return;
-      document.getElementById("editTaskTypeIndex").value = String(idx);
-      document.getElementById("taskTypeModalTitle").textContent = "แก้ไขประเภทงาน";
-      document.getElementById("taskTypeFormLabel").textContent = "แก้ไขชื่อประเภทงาน";
-      document.getElementById("newTaskTypeName").value = typeName;
-      document.getElementById("taskTypeSubmitBtn").innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไข';
-      document.getElementById("cancelEditTaskTypeBtn").style.display = "inline-flex";
-    };
-
-    function renderTaskTypePreview() {
-      const wrap = document.getElementById("taskTypeListPreview");
-      if (!wrap) return;
-      if (!taskTypes.length) {
-        wrap.innerHTML = `<div style="font-size:0.84rem; color:var(--text-muted);">ยังไม่มีประเภทงานในห้องนี้</div>`;
-        return;
-      }
-
-      wrap.innerHTML = taskTypes
-        .map(
-          (typeName, idx) => `
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; background:var(--bg-input); border:1px solid var(--border); padding:8px 12px; border-radius:10px;">
-            <span class="type-badge">${escapeHtml(typeName)}</span>
-            <div style="display:flex; gap:6px;">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="startEditTaskType(${idx})">
-                <i class="fa-solid fa-pen"></i> แก้ไข
-              </button>
-              <button type="button" class="btn btn-danger btn-sm" onclick="deleteTaskType(${idx})">
-                <i class="fa-solid fa-trash"></i> ลบ
-              </button>
-            </div>
-          </div>`
-        )
-        .join("");
-    }
-
-    window.saveTaskType = async (e) => {
-      e.preventDefault();
-      const name = document.getElementById("newTaskTypeName").value.trim();
-      const editIdx = Number(document.getElementById("editTaskTypeIndex").value);
-      if (!name || !currentRoomId) return;
-
-      const duplicate = taskTypes.some((t, i) => t === name && i !== editIdx);
-      if (duplicate) {
-        return alert("มีประเภทงานนี้อยู่แล้วครับ");
-      }
-
-      let updated = [...taskTypes];
-      if (editIdx >= 0 && updated[editIdx]) {
-        const oldName = updated[editIdx];
-        updated[editIdx] = name;
-
-        if (oldName !== name) {
-          const matchingTasks = tasks.filter((t) => t.taskType === oldName);
-          await Promise.all(
-            matchingTasks.map((t) => updateDoc(doc(db, "tasks", t.id), { taskType: name }))
-          );
-        }
-      } else {
-        updated.push(name);
-      }
-
-      await updateDoc(doc(db, "rooms", currentRoomId), { taskTypes: updated });
-      taskTypes = updated;
-      resetTaskTypeForm();
-      renderTaskTypeOptions(name);
-      renderTaskTypePreview();
-      renderTasks();
-      playSound("save");
-      showToast(editIdx >= 0 ? "บันทึกการแก้ไขประเภทงานแล้ว" : `เพิ่มประเภท "${name}" แล้ว`);
-    };
-
-    window.deleteTaskType = async (idx) => {
-      const target = taskTypes[idx];
-      if (!target || !currentRoomId) return;
-      if (!confirm(`ต้องการลบประเภทงาน "${target}" ใช่ไหม?`)) return;
-
-      const updated = taskTypes.filter((_, i) => i !== idx);
-      await updateDoc(doc(db, "rooms", currentRoomId), { taskTypes: updated });
-      taskTypes = updated;
-
-      if (Number(document.getElementById("editTaskTypeIndex").value) === idx) {
-        resetTaskTypeForm();
-      }
-      renderTaskTypeOptions();
-      renderTaskTypePreview();
-      renderTasks();
-      playSound("delete");
-      showToast(`ลบประเภทงาน "${target}" แล้ว`);
     };
 
     function renderTaskTypeOptions(preferSelect = null) {
       const selectEl = document.getElementById("taskType");
       if (!selectEl) return;
       const prevVal = preferSelect || selectEl.value;
-      const list = taskTypes.length ? taskTypes : DEFAULT_TASK_TYPES;
 
-      selectEl.innerHTML = list
+      selectEl.innerHTML = TASK_TYPE_OPTIONS
         .map((t) => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`)
         .join("");
 
@@ -1668,7 +1483,6 @@
     }
 
     window.toggleNoDueDate = () => {
-      playSound("click");
       const isNoDue = document.getElementById("taskNoDueDate").checked;
       const dateInput = document.getElementById("taskDueDate");
       dateInput.disabled = isNoDue;
@@ -1696,7 +1510,7 @@
         document.getElementById("taskModalTitle").textContent = "แก้ไขงาน";
         document.getElementById("editTaskId").value = t.id;
         document.getElementById("taskSubject").value = t.subject;
-        renderTaskTypeOptions(t.taskType || (taskTypes[0] || DEFAULT_TASK_TYPES[0]));
+        renderTaskTypeOptions(t.taskType || TASK_TYPE_OPTIONS[0]);
         document.getElementById("taskTitle").value = t.title;
         document.getElementById("taskTeacher").value = t.teacher || "";
         document.getElementById("taskDesc").value = t.description || "";
@@ -1752,23 +1566,20 @@
         });
       }
       closeModal("taskModal");
-      playSound("save");
       showToast(editId ? "บันทึกการแก้ไขงานแล้ว" : "เพิ่มงานลงห้องเรียนแล้ว!");
     };
 
     window.toggleComplete = async (taskId, currentState) => {
       const nextState = !currentState;
-      playSound(nextState ? "done" : "click");
       await updateDoc(doc(db, "tasks", taskId), {
         completed: nextState,
         updatedAt: serverTimestamp()
       });
-      if (nextState) showToast("เยี่ยมมาก! ทำเครื่องหมายเสร็จแล้ว");
+      showToast(nextState ? "ย้ายไปที่หัวข้อ เสร็จแล้ว" : "ย้ายกลับไปที่งานที่ต้องทำ");
     };
 
     window.deleteTask = async (taskId) => {
       if (!confirm("ต้องการลบงานนี้ออกจากห้องเรียนใช่ไหม?")) return;
-      playSound("delete");
       await deleteDoc(doc(db, "tasks", taskId));
       showToast("ลบรายการงานแล้ว");
     };
@@ -1819,31 +1630,14 @@
     }
 
     function updateStats() {
-      animateStatNumber("statAll", tasks.length);
+      animateStatNumber("statAll", tasks.filter((t) => !t.completed).length);
       animateStatNumber("statPending", tasks.filter((t) => !t.completed).length);
       animateStatNumber("statUrgent", tasks.filter(isUrgentOrOverdue).length);
       animateStatNumber("statDone", tasks.filter((t) => t.completed).length);
     }
 
-    window.renderTasks = () => {
-      const listEl = document.getElementById("taskList");
-      const search = document.getElementById("searchInput").value.trim().toLowerCase();
-      const subjFilter = document.getElementById("subjectFilter").value;
-      const sortMode = document.getElementById("sortSelect").value;
-
-      let filtered = tasks.filter((t) => {
-        if (statusFilter === "pending" && t.completed) return false;
-        if (statusFilter === "done" && !t.completed) return false;
-        if (statusFilter === "urgent" && !isUrgentOrOverdue(t)) return false;
-        if (subjFilter !== "all" && t.subject !== subjFilter) return false;
-        if (search) {
-          const hay = `${t.title || ""} ${t.taskType || ""} ${t.teacher || ""} ${t.description || ""} ${t.subject || ""}`.toLowerCase();
-          if (!hay.includes(search)) return false;
-        }
-        return true;
-      });
-
-      filtered.sort((a, b) => {
+    function sortTaskArray(arr, sortMode) {
+      return [...arr].sort((a, b) => {
         if (sortMode === "newest") {
           return (b.createdAt || 0) - (a.createdAt || 0);
         }
@@ -1854,61 +1648,153 @@
         }
         return (a.dueDate || "9999-12-31").localeCompare(b.dueDate || "9999-12-31");
       });
+    }
 
-      if (!filtered.length) {
-        listEl.innerHTML = `
-          <div class="empty-state">
-            <i class="fa-solid fa-clipboard-check" style="font-size:2rem; margin-bottom:10px; display:block;"></i>
-            <p>ยังไม่มีรายการงานตามเงื่อนไขที่เลือก</p>
-            <p style="font-size:0.82rem; margin-top:4px;">กดปุ่ม "เพิ่มงาน" ด้านบน หรือแชร์รหัสห้องให้เพื่อนช่วยอัปเดตได้เลย</p>
-          </div>`;
+    function buildTaskCardHtml(t, index) {
+      const subjObj = subjects.find((s) => s.name === t.subject) || { color: "#93c5fd" };
+      const due = getDueMeta(t.dueDate, t.completed);
+      const delay = Math.min(index * 40, 280);
+      const typeBadge = t.taskType
+        ? `<span class="type-badge">${escapeHtml(t.taskType)}</span>`
+        : "";
+      const teacherBadge = t.teacher
+        ? `<span class="teacher-badge"><i class="fa-solid fa-chalkboard-user"></i> ส่งครู: ${escapeHtml(t.teacher)}</span>`
+        : "";
+      const manageButtons = manageMode
+        ? `<div class="manage-only-actions">
+            <button class="btn btn-secondary btn-sm" onclick="openTaskModal('${t.id}')">
+              <i class="fa-solid fa-pen"></i> แก้ไข
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="deleteTask('${t.id}')">
+              <i class="fa-solid fa-trash"></i> ลบ
+            </button>
+          </div>`
+        : "";
+
+      return `
+        <article class="task-card ${t.completed ? "done" : ""}" style="border-left-color:${subjObj.color}; animation-delay:${delay}ms;">
+          <div class="task-body">
+            <div class="task-top">
+              <span class="subject-tag" style="background:${subjObj.color};">${escapeHtml(t.subject)}</span>
+              ${typeBadge}
+              <span class="due-badge ${due.cls}">${due.text}</span>
+              ${teacherBadge}
+            </div>
+            <div class="task-title">${escapeHtml(t.title)}</div>
+            ${t.description ? `<div class="task-desc">${escapeHtml(t.description)}</div>` : ""}
+          </div>
+          <div class="task-actions">
+            <button class="btn ${t.completed ? "btn-secondary" : "btn-primary"} btn-sm" onclick="toggleComplete('${t.id}', ${Boolean(t.completed)})">
+              <i class="fa-solid ${t.completed ? "fa-rotate-left" : "fa-check"}"></i>
+              ${t.completed ? "ยกเลิกเสร็จ" : "เสร็จแล้ว"}
+            </button>
+            ${manageButtons}
+          </div>
+        </article>`;
+    }
+
+    window.renderTasks = () => {
+      const containerEl = document.getElementById("taskContainer");
+      const search = document.getElementById("searchInput").value.trim().toLowerCase();
+      const subjFilter = document.getElementById("subjectFilter").value;
+      const sortMode = document.getElementById("sortSelect").value;
+
+      const baseFiltered = tasks.filter((t) => {
+        if (subjFilter !== "all" && t.subject !== subjFilter) return false;
+        if (search) {
+          const hay = `${t.title || ""} ${t.taskType || ""} ${t.teacher || ""} ${t.description || ""} ${t.subject || ""}`.toLowerCase();
+          if (!hay.includes(search)) return false;
+        }
+        return true;
+      });
+
+      const activeTasks = sortTaskArray(
+        baseFiltered.filter((t) => !t.completed && (statusFilter !== "urgent" || isUrgentOrOverdue(t))),
+        sortMode
+      );
+
+      const completedTasks = sortTaskArray(
+        baseFiltered.filter((t) => t.completed),
+        sortMode
+      );
+
+      // กรณีเลือกดูเฉพาะหัวข้อ "เสร็จแล้ว"
+      if (statusFilter === "done") {
+        if (!completedTasks.length) {
+          containerEl.innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-circle-check" style="font-size:2rem; margin-bottom:10px; display:block; color:var(--success);"></i>
+              <p>ยังไม่มีงานที่กดเสร็จแล้ว</p>
+              <p style="font-size:0.82rem; margin-top:4px;">เมื่อกดปุ่ม "เสร็จแล้ว" ในรายการงาน ระบบจะย้ายมาไว้ที่นี่อัตโนมัติ</p>
+            </div>`;
+          return;
+        }
+
+        containerEl.innerHTML = `
+          <section class="section-block">
+            <div class="section-header">
+              <div class="section-title-wrap" style="color:var(--success);">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>เสร็จแล้ว</span>
+                <span class="section-count done-count">${completedTasks.length}</span>
+              </div>
+            </div>
+            <div class="task-list">
+              ${completedTasks.map((t, idx) => buildTaskCardHtml(t, idx)).join("")}
+            </div>
+          </section>`;
         return;
       }
 
-      listEl.innerHTML = filtered
-        .map((t, index) => {
-          const subjObj = subjects.find((s) => s.name === t.subject) || { color: "#93c5fd" };
-          const due = getDueMeta(t.dueDate, t.completed);
-          const delay = Math.min(index * 45, 300);
-          const typeBadge = t.taskType
-            ? `<span class="type-badge">${escapeHtml(t.taskType)}</span>`
-            : "";
-          const teacherBadge = t.teacher
-            ? `<span class="teacher-badge"><i class="fa-solid fa-chalkboard-user"></i> ส่ง: ${escapeHtml(t.teacher)}</span>`
-            : "";
-          const manageButtons = manageMode
-            ? `<div class="manage-only-actions">
-                <button class="btn btn-secondary btn-sm" onclick="openTaskModal('${t.id}')">
-                  <i class="fa-solid fa-pen"></i> แก้ไข
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="deleteTask('${t.id}')">
-                  <i class="fa-solid fa-trash"></i> ลบ
-                </button>
-              </div>`
-            : "";
+      // กรณีดูรายการหลัก: แยกงานที่ยังไม่เสร็จไว้ด้านบน และแยกหัวข้อ "เสร็จแล้ว" ไว้ด้านล่าง
+      const activeSectionLabel = statusFilter === "urgent" ? "งานใกล้ส่ง / เลยกำหนด" : "งานที่ต้องทำ";
+      const activeEmptyText = statusFilter === "urgent"
+        ? "ไม่มีงานเร่งด่วนหรือเลยกำหนดตามเงื่อนไขที่เลือก"
+        : "ไม่มีงานค้างที่ต้องทำแล้ว เยี่ยมมาก!";
 
-          return `
-            <article class="task-card ${t.completed ? "done" : ""}" style="border-left-color:${subjObj.color}; animation-delay:${delay}ms;">
-              <div class="task-body">
-                <div class="task-top">
-                  <span class="subject-tag" style="background:${subjObj.color};">${escapeHtml(t.subject)}</span>
-                  ${typeBadge}
-                  <span class="due-badge ${due.cls}">${due.text}</span>
-                  ${teacherBadge}
-                </div>
-                <div class="task-title">${escapeHtml(t.title)}</div>
-                ${t.description ? `<div class="task-desc">${escapeHtml(t.description)}</div>` : ""}
+      const activeSectionHtml = `
+        <section class="section-block">
+          <div class="section-header">
+            <div class="section-title-wrap">
+              <i class="fa-solid fa-list-check" style="color:var(--accent);"></i>
+              <span>${activeSectionLabel}</span>
+              <span class="section-count">${activeTasks.length}</span>
+            </div>
+          </div>
+          ${
+            activeTasks.length
+              ? `<div class="task-list">${activeTasks.map((t, idx) => buildTaskCardHtml(t, idx)).join("")}</div>`
+              : `<div class="empty-state">
+                  <i class="fa-solid fa-clipboard-check" style="font-size:2rem; margin-bottom:10px; display:block;"></i>
+                  <p>${activeEmptyText}</p>
+                  <p style="font-size:0.82rem; margin-top:4px;">กดปุ่ม "เพิ่มงาน" ด้านบนเพื่อเพิ่มรายการใหม่ได้เลย</p>
+                </div>`
+          }
+        </section>`;
+
+      const completedSectionHtml = statusFilter === "all" && completedTasks.length
+        ? `
+          <section class="section-block">
+            <div class="section-header" onclick="toggleDoneSection()" style="cursor:pointer;">
+              <div class="section-title-wrap" style="color:var(--success);">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>เสร็จแล้ว</span>
+                <span class="section-count done-count">${completedTasks.length}</span>
               </div>
-              <div class="task-actions">
-                <button class="btn ${t.completed ? "btn-secondary" : "btn-primary"} btn-sm" onclick="toggleComplete('${t.id}', ${Boolean(t.completed)})">
-                  <i class="fa-solid ${t.completed ? "fa-rotate-left" : "fa-check"}"></i>
-                  ${t.completed ? "ยกเลิกเสร็จ" : "เสร็จแล้ว"}
-                </button>
-                ${manageButtons}
-              </div>
-            </article>`;
-        })
-        .join("");
+              <button type="button" class="btn btn-secondary btn-sm">
+                <i class="fa-solid ${doneSectionExpanded ? "fa-chevron-up" : "fa-chevron-down"}"></i>
+                ${doneSectionExpanded ? "ซ่อน" : "แสดง"}
+              </button>
+            </div>
+            ${
+              doneSectionExpanded
+                ? `<div class="task-list">${completedTasks.map((t, idx) => buildTaskCardHtml(t, idx)).join("")}</div>`
+                : ""
+            }
+          </section>`
+        : "";
+
+      containerEl.innerHTML = activeSectionHtml + completedSectionHtml;
     };
 
     function escapeHtml(str) {
